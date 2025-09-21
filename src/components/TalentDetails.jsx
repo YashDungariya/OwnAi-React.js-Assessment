@@ -1,50 +1,54 @@
-// TalentDetails.jsx
 import React from "react";
 
+// List of supported currencies for talent billing
 const CURRENCIES = ["USD - Dollars ($)", "INR - Rupees (₹)", "EUR - Euros (€)"];
 
 export default function TalentDetails({
-  purchase,
-  reqSections,
-  clientJobs,
-  errors,
-  addReqSection,
-  removeReqSection,
-  handleJobChange,
-  handleTalentToggle,
-  handleTalentFieldChange,
+  purchase, // Current purchase order data (poType, currency, etc.)
+  reqSections, // Array of sections, each representing a job / req with selected talents
+  clientJobs, // List of jobs for the selected client
+  errors, // Validation errors object
+  addReqSection, // Function to add a new REQ section (only for Group PO)
+  removeReqSection, // Function to remove a REQ section
+  handleJobChange, // Function to handle selection of a job in a section
+  handleTalentToggle, // Function to toggle talent selection (checkbox)
+  handleTalentFieldChange, // Function to update talent fields (bill rate, duration, etc.)
 }) {
   return (
     <div className="mt-4">
+      {/* Header with Add Another button for Group PO */}
       <div className="d-flex justify-content-between align-items-center mb-2">
         <h5 className="mb-0">Talent Detail</h5>
         {purchase.poType === "Group PO" && (
           <button
             type="button"
             className="btn btn-outline-primary btn-sm"
-            onClick={addReqSection}
+            onClick={addReqSection} // Adds new REQ section
           >
             + Add Another
           </button>
         )}
       </div>
 
+      {/* Info message if no jobs loaded for the client */}
       {clientJobs.length === 0 && (
         <div className="small-muted mb-2">
           Select a Client to load Jobs / REQs.
         </div>
       )}
 
+      {/* Loop through each REQ section */}
       {reqSections.map((section, sIdx) => (
         <div key={section.id} className="req-section mb-3 p-2 border rounded">
           <div className="row g-2 align-items-end">
+            {/* Job Title / REQ Name selection */}
             <div className="col-md-3">
               <label className="form-label">Job Title / REQ Name *</label>
               <select
                 className="form-select"
                 value={section.jobId}
-                onChange={(e) => handleJobChange(sIdx, e.target.value)}
-                disabled={clientJobs.length === 0}
+                onChange={(e) => handleJobChange(sIdx, e.target.value)} // Update selected job for this section
+                disabled={clientJobs.length === 0} // Disable if no client jobs loaded
               >
                 <option value="">Select Job</option>
                 {clientJobs.map((j) => (
@@ -53,11 +57,13 @@ export default function TalentDetails({
                   </option>
                 ))}
               </select>
+              {/* Validation error for this section */}
               {errors[`req_${sIdx}`] && (
                 <div className="text-danger small">{errors[`req_${sIdx}`]}</div>
               )}
             </div>
 
+            {/* REQ ID / Assignment ID (read-only) */}
             <div className="col-md-3">
               <label className="form-label">REQ ID / Assignment ID</label>
               <input
@@ -67,6 +73,7 @@ export default function TalentDetails({
               />
             </div>
 
+            {/* Remove button if multiple sections */}
             <div className="col-md-6 text-end">
               {reqSections.length > 1 && (
                 <button
@@ -80,6 +87,7 @@ export default function TalentDetails({
             </div>
           </div>
 
+          {/* Talents List */}
           <div className="mt-3">
             {section.talents && section.talents.length > 0 ? (
               section.talents.map((t) => (
@@ -87,6 +95,7 @@ export default function TalentDetails({
                   key={t.id}
                   className="talent-row row align-items-center g-2 mb-2"
                 >
+                  {/* Talent selection checkbox */}
                   <div className="col-md-12 d-flex align-items-center">
                     <div className="form-check">
                       <input
@@ -105,14 +114,14 @@ export default function TalentDetails({
                     </div>
                   </div>
 
-                  {/* Contract Duration */}
+                  {/* Contract Duration input */}
                   <div className="col-md-3">
                     <label className="form-label">Contract Duration</label>
                     <input
                       className="form-control"
                       placeholder="Contract Duration (months)"
                       value={t.contractDuration || ""}
-                      disabled={!t.selected}
+                      disabled={!t.selected} // Disabled if talent not selected
                       onChange={(e) =>
                         handleTalentFieldChange(
                           sIdx,
@@ -122,18 +131,15 @@ export default function TalentDetails({
                         )
                       }
                     />
+                    {/* Validation error */}
                     {errors[`req_${sIdx}_talent_${t.id}_contractDuration`] && (
                       <div className="text-danger small">
-                        {
-                          errors[
-                            `req_${sIdx}_talent_${t.id}_contractDuration`
-                          ]
-                        }
+                        {errors[`req_${sIdx}_talent_${t.id}_contractDuration`]}
                       </div>
                     )}
                   </div>
 
-                  {/* Bill Rate + Currency */}
+                  {/* Bill Rate and Currency */}
                   <div className="col-md-3">
                     <div className="row g-2">
                       <div className="col-6">
@@ -184,7 +190,7 @@ export default function TalentDetails({
                     </div>
                   </div>
 
-                  {/* Standard Time BR + Currency */}
+                  {/* Standard Time Bill Rate and Currency */}
                   <div className="col-md-3">
                     <div className="row g-2">
                       <div className="col-6">
@@ -241,7 +247,7 @@ export default function TalentDetails({
                     </div>
                   </div>
 
-                  {/* Over Time BR + Currency */}
+                  {/* Over Time Bill Rate and Currency */}
                   <div className="col-md-3">
                     <div className="row g-2">
                       <div className="col-6">
@@ -294,6 +300,7 @@ export default function TalentDetails({
                 </div>
               ))
             ) : (
+              // Message if no talents loaded for selected job
               <div className="small-muted mt-2">
                 Select a job to view talents.
               </div>
@@ -302,6 +309,7 @@ export default function TalentDetails({
         </div>
       ))}
 
+      {/* General error for talents if any */}
       {errors.talents && (
         <div className="text-danger small mt-2">{errors.talents}</div>
       )}
