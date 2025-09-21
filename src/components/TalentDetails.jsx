@@ -1,3 +1,4 @@
+// TalentDetails.jsx
 import React from "react";
 
 // List of supported currencies for talent billing
