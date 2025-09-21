@@ -75,16 +75,16 @@ Built with **React**, **Bootstrap**, and **React DatePicker**, the app demonstra
 ## Project Structure
 
 purchase-order-form/
-|- package.json
-|- vite.config.js
-|- README.md
-`- src/
-   |- main.jsx
-   |- App.jsx
-   `- components/
-      |- PurchaseOrderForm.jsx
-      `- TalentDetails.jsx
-
+│
+├─ src/
+│  ├─ components/
+│  │  ├─ PurchaseOrderForm.jsx   # Main form component
+│  │  └─ TalentDetails.jsx       # Dynamic talent/job sections
+│  ├─ App.jsx
+│  └─ main.jsx
+├─ package.json
+├─ vite.config.js
+└─ README.md
 
 ## Components
 
