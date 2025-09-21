@@ -77,13 +77,13 @@ export default function PurchaseOrderForm() {
     const client = MOCK_CLIENTS.find((c) => c.id === purchase.clientId);
     setClientJobs(client ? client.jobs : []);
 
-    // Reset job selection for existing sections when client changes
+    
     setReqSections((prev) =>
       prev.map((s) => ({ ...s, jobId: "", jobTitle: "", reqId: "", talents: [] }))
     );
   }, [purchase.clientId]);
 
-  /* If global purchase currency changes, update existing talent currency defaults if they are empty */
+ 
   useEffect(() => {
     setReqSections((prev) =>
       prev.map((s) => ({
@@ -166,7 +166,6 @@ const handleTalentToggle = (sectionIndex, talentId) => {
   const validate = () => {
     const e = {};
 
-    // Purchase validations
     if (!purchase.clientId) e.clientId = "Client Name is required";
     if (!purchase.poType) e.poType = "Purchase Order Type is required";
     if (!purchase.poNumber || purchase.poNumber.trim() === "") e.poNumber = "PO Number is required";
@@ -182,7 +181,7 @@ const handleTalentToggle = (sectionIndex, talentId) => {
     else if (purchase.budget.length > 5) e.budget = "Budget maximum 5 digits allowed";
     if (!purchase.currency) e.currency = "Currency is required";
 
-    // REQ / Talent validations
+
     let totalSelectedTalents = 0;
     reqSections.forEach((s, idx) => {
       if (!s.jobId) {
@@ -211,12 +210,12 @@ const handleTalentToggle = (sectionIndex, talentId) => {
       }
     });
 
-    // if (purchase.poType === "Individual PO") {
-    //   if (totalSelectedTalents === 0) e.talents = "Select one talent for Individual PO";
-    //   else if (totalSelectedTalents > 1) e.talents = "Only one talent allowed for Individual PO";
-    // } else if (purchase.poType === "Group PO") {
-    //   if (totalSelectedTalents < 1) e.talents = "Select at least two talents for Group PO";
-    // }
+    if (purchase.poType === "Individual PO") {
+      if (totalSelectedTalents === 0) e.talents = "Select one talent for Individual PO";
+      else if (totalSelectedTalents > 1) e.talents = "Only one talent allowed for Individual PO";
+    } else if (purchase.poType === "Group PO") {
+      if (totalSelectedTalents < 2) e.talents = "Select at least two talents for Group PO";
+    }
 
     setErrors(e);
     return Object.keys(e).length === 0;
