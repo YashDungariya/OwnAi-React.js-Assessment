@@ -14,8 +14,7 @@ Built with **React**, **Bootstrap**, and **React DatePicker**, the app demonstra
 - [Usage](#usage)  
 - [Project Structure](#project-structure)  
 - [Components](#components)  
-- [Form Validation](#form-validation)  
-- [How to Explain in an Interview](#how-to-explain-in-an-interview)  
+- [Form Validation](#form-validation)
 
 ---
 
@@ -110,6 +109,16 @@ purchase-order-form/
     - Validation display for each talent field.
 
 3. Form Validation
+- Purchase-level: all mandatory fields filled, email format valid, budget numeric & ≤5 digits, PO end date ≥ start date.
+- Talent-level:
+    - Individual PO: exactly 1 talent selected.
+    - Group PO: minimum 2 talents selected.
+    - Billing fields required for selected talents.
+- Error messages displayed inline.
+- Form scrolls to top on validation failure.
+
+## Form Validation
+
 - Purchase-level: all mandatory fields filled, email format valid, budget numeric & ≤5 digits, PO end date ≥ start date.
 - Talent-level:
     - Individual PO: exactly 1 talent selected.
