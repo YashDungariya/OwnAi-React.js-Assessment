@@ -126,3 +126,7 @@ purchase-order-form/
     - Billing fields required for selected talents.
 - Error messages displayed inline.
 - Form scrolls to top on validation failure.
+
+
+## Author
+Yash Dungariya – React.js Assessment: Purchase Order Form Development Submission
